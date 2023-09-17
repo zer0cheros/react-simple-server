@@ -1,13 +1,14 @@
 {
   "name": "react-simple-server-test",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "a way to test toyr react application ",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
-    "start": "nodemon --watch ./ --exec 'npm run build && node dist/index.js'"
+    "start": "nodemon --watch ./ --exec 'npm run build && node dist/index.js'",
+    "postinstall": "node generateServerFile.js"
   },
   "author": "zer0cheros",
   "license": "MIT",
