@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-server-test",
+  "name": "react-simple-server",
   "version": "1.0.1",
   "description": "a way to test toyr react application ",
   "main": "dist/index.js",
