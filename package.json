@@ -1,6 +1,6 @@
 {
   "name": "@zer0cheros/simple-react-server",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "a way to test your react framework with a really easy and fast api",
   "main": "index.ts",
   "module": "dist/index.js",
