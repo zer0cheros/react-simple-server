@@ -1,7 +1,7 @@
 {
-  "name": "zer0cheros-simple-react-server",
+  "name": "@zer0cheros/simple-react-server",
   "version": "1.0.2",
-  "description": "a way to test toyr react application ",
+  "description": "a way to test your react framework with a really easy and fast api",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "scripts": {
