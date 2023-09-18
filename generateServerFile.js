@@ -27,6 +27,7 @@ server.Get('/user', true).DB('users')
 server.start()
 `;
 
+
 fs.writeFileSync(serverFilePath, serverCode);
 fs.copyFileSync(sourceFilePath, destinationFilePath)
 console.log(`server.ts file created in the 'src' folder.`);
