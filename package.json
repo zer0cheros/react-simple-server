@@ -4,9 +4,7 @@
   "description": "a way to test your react framework with a really easy and fast api",
   "main": "index.ts",
   "module": "dist/index.js",
-  "postinstall": {
-    "@zer0cheros/simple-react-server/generateServerFile.js": "link ./generateServerFile.js"
-  },
+  "postinstall": "node generateServerFile.js",
   "scripts": {
     "postinstall": "postinstall",
     "prepare": "postinstall",
