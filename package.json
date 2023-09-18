@@ -1,5 +1,5 @@
 {
-  "name": "@zer0cheros/simple-react-server",
+  "name": "zer0cheros-simple-react-server",
   "version": "1.0.1",
   "description": "a way to test toyr react application ",
   "main": "dist/index.js",
@@ -25,5 +25,13 @@
   "keywords": [
     "react",
     "server"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zer0cheros/react-simple-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zer0cheros/react-simple-server/issues"
+  },
+  "homepage": "https://github.com/zer0cheros/react-simple-server#readme"
 }
