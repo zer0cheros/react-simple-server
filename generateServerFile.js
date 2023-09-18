@@ -3,7 +3,7 @@ const path = require('path');
 
 const reactSrcPath = path.join(__dirname, './src');
 const serverFilePath = path.join(reactSrcPath, 'server.ts');
-const sourceFilePath = path.join(__dirname, 'node_modules/@zer0cheros/simple-react-server/src/server.ts');
+const sourceFilePath = path.join(__dirname, 'src/server.ts');
 const destinationDir = path.join(__dirname, '../../../../src');;
 const destinationFilePath = path.join(destinationDir, 'server.ts');
 
