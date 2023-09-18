@@ -4,10 +4,9 @@
   "description": "a way to test your react framework with a really easy and fast api",
   "main": "index.ts",
   "module": "dist/index.js",
-  "postinstall": "node generateServerFile.js",
   "scripts": {
-    "postinstall": "postinstall",
-    "prepare": "postinstall",
+    "postinstall": "node generateServerFile.js",
+    "prepare": "node generateServerFile.js",
     "build": "rimraf dist && tsc",
     "start": "nodemon --watch ./ --exec 'npm run build && node dist/index.js'"
   },
