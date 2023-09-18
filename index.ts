@@ -1,6 +1,11 @@
 import express from 'express';
 import {  Request, Response, Application } from 'express';
 import knex, {Knex} from 'knex';
+import fs from 'fs';
+
+// Create a file when the package is installed
+fs.writeFileSync('example.txt', 'This is an example file created by your package.');
+
 
 const defaultDatabaseConfig = {
   client: 'mysql',
