@@ -11,7 +11,9 @@ const destinationFilePath = path.join(destinationDir, 'server.ts');
 if (!fs.existsSync(reactSrcPath)) {
   fs.mkdirSync(reactSrcPath);
 }
-fs.mkdirSync(destinationDir)
+if (!fs.existsSync(destinationDir)) {
+  fs.mkdirSync(destinationDir);
+}
 
 const serverCode = `
 import Server from '@zer0cheros/simple-react-server'
