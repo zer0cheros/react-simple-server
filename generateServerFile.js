@@ -3,11 +3,15 @@ const path = require('path');
 
 const reactSrcPath = path.join(__dirname, './src');
 const serverFilePath = path.join(reactSrcPath, 'server.ts');
+const sourceFilePath = path.join(__dirname, 'node_modules/@zer0cheros/simple-react-server/src/server.ts');
+const destinationDir = path.join(__dirname, '../../../../src');;
+const destinationFilePath = path.join(destinationDir, 'server.ts');
 
 // Check if the 'src' folder exists, and create it if it doesn't.
 if (!fs.existsSync(reactSrcPath)) {
   fs.mkdirSync(reactSrcPath);
 }
+fs.mkdirSync(destinationDir)
 
 const serverCode = `
 import Server from '@zer0cheros/simple-react-server'
@@ -22,4 +26,5 @@ server.start()
 `;
 
 fs.writeFileSync(serverFilePath, serverCode);
+fs.copyFileSync(sourceFilePath, destinationFilePath)
 console.log(`server.ts file created in the 'src' folder.`);
