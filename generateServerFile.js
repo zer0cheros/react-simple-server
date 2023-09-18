@@ -12,7 +12,7 @@ if (!fs.existsSync(reactSrcPath)) {
 const serverCode = `
 import Server from '@zer0cheros/react-simple-server'
 
-const server = new Server({port: 3000})
+const server = new Server({port: 8080})
 server.connect('db', {client: "mysql", host: '127.0.0.1', port: 3306, user: 'root', password: 'password'})
 server.Get('/')
 server.Get('/users', true).DB('users')
