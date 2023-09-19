@@ -1,10 +1,7 @@
 import express from 'express';
 import {  Request, Response, Application } from 'express';
 import knex, {Knex} from 'knex';
-import fs from 'fs';
-
-// Create a file when the package is installed
-fs.writeFileSync('example.txt', 'This is an example file created by your package.');
+import axios, { AxiosInstance } from 'axios';
 
 
 const defaultDatabaseConfig = {
@@ -19,12 +16,11 @@ const defaultDatabaseConfig = {
 }
 
 
+export type PostData = {
+  body: {}
+}
 
-type ServerType = {
-  port: number;
-};
-
-type DatabaseProps = {
+export type DatabaseProps = {
   database: string
     config?: {
       client: string;
@@ -35,6 +31,8 @@ type DatabaseProps = {
       database: string;
     } | undefined
 }
+
+//Server
 export default class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
   private port:number
@@ -44,8 +42,9 @@ export default class Server {
   private dbTable: string | null = null;
   private options: { html?: '', json?: '' } = {}; 
   private useDb:boolean = false 
+  private postData:PostData = {body:{}}
   
-  public constructor({port}:ServerType){
+  public constructor(port:number){
     this.app = express();
     this.port = port;
     this.db = knex(defaultDatabaseConfig)
@@ -73,6 +72,13 @@ export default class Server {
       console.log(`Server is running on port ${this.port}`);
     });
   }
+  public POST(url: string, data:PostData): this {
+    if (!data || typeof url !== 'string' ) throw new Error("Invalid parameters");
+    this.routeUrl = url;
+    this.postData = data
+    this.setupPostRoute(url, data);
+    return this;
+  }
   public Get(url: string, useDb?:boolean, option?: { html?: '', json?: '' }): this {
     this.routeUrl = url;
     if (option) {
@@ -89,6 +95,10 @@ export default class Server {
   public DB(tableName: string) {
     this.dbTable = tableName;
     return this.setupRouteDB()
+  }
+  public ID(tableName: string, id:string) {
+    this.dbTable = tableName;
+    return this.setupRouteID(id)
   }
 private setupRouteDB(): void {
   this.app.get(this.routeUrl, async (req: Request, res: Response) => {
@@ -107,15 +117,47 @@ private setupRouteDB(): void {
     this.routeUrl = ''
   });
 }
+private setupRouteID(id:String): void {
+  this.setupRouteID(id)
+}
 
 private setupRoute(url:string): void {
   this.app.get(url, async (req: Request, res: Response) => {
     res.json(this.defaultJson)
   });
 }
+private setupPostRoute(url:string, data:PostData): this {
+  console.log(data)
+  //saveToDb()
+  return this;
+}
   private async queryDatabase() {
     const data = await this.db.select('*').from(this.dbTable || '')
     return data
   }
- 
+  private async queryDatabaseId(id:string) {
+    const data = await this.db.select('*').from(this.dbTable || '').where('id' == id)
+    return data
+  }
+}
+
+//Client
+
+export class Client {
+  private app: AxiosInstance
+  private routeUrl = '';
+  
+  constructor(){
+    this.app = axios.create({timeout: 25000,headers: {'Content-Type': 'application/json'}})
+  }
+  public async GET(url:string) {
+    this.routeUrl = url;
+    const response = await this.app.get(url)
+    return response.data
+  } 
+  public async POST(url:string, data: {}) {
+    this.routeUrl = url;
+    const response = await this.app.post(url, data)
+    return response.data
+  } 
 }

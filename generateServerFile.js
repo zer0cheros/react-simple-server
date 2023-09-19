@@ -16,9 +16,9 @@ if (!fs.existsSync(destinationDir)) {
 }
 
 const serverCode = `
-import Server from '@zer0cheros/react-simple-server'
+import Server from '@zer0cheros/simple-react-server'
 
-const server = new Server({port: 8080})
+const server = new Server(8080)
 
 //Config DB with you own credentials
 server.connect('db', {client: "mysql", host: '127.0.0.1', port: 3306, user: 'root', password: 'password'})
