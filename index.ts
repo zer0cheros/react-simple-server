@@ -1,7 +1,9 @@
-import express from 'express';
+
+import * as express from 'express';
 import {  Request, Response, Application } from 'express';
 import knex, {Knex} from 'knex';
 import axios, { AxiosInstance } from 'axios';
+
 
 
 const defaultDatabaseConfig = {
@@ -17,7 +19,7 @@ const defaultDatabaseConfig = {
 
 
 export type PostData = {
-  body: {}
+  body: {type: any}
 }
 
 export type DatabaseProps = {
@@ -35,17 +37,20 @@ export type DatabaseProps = {
 //Server
 export default class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
-  private port:number
+  private port:number | 5000
   private app: Application
   private db: Knex
   private routeUrl = '';
   private dbTable: string | null = null;
-  private options: { html?: '', json?: '' } = {}; 
+  private options: { html?: '', json?:string } = {}; 
   private useDb:boolean = false 
-  private postData:PostData = {body:{}}
+  private dbId:number = 0;
   
   public constructor(port:number){
+    // @ts-ignore
     this.app = express();
+    this.app.use(express.urlencoded({extended: true}))
+    this.app.use(express.json())
     this.port = port;
     this.db = knex(defaultDatabaseConfig)
   }
@@ -72,92 +77,120 @@ export default class Server {
       console.log(`Server is running on port ${this.port}`);
     });
   }
-  public POST(url: string, data:PostData): this {
-    if (!data || typeof url !== 'string' ) throw new Error("Invalid parameters");
+  public Post(url: string, saveToDb?:boolean, databaseTable?:string): this {
+    if ( typeof url !== 'string' ) throw new Error("Invalid parameters");
     this.routeUrl = url;
-    this.postData = data
-    this.setupPostRoute(url, data);
+    saveToDb ? this.useDb = true: this.useDb = false
+    databaseTable ? this.dbTable = databaseTable : null
+    this.setupPostRoute(url);
     return this;
   }
-  public Get(url: string, useDb?:boolean, option?: { html?: '', json?: '' }): this {
+  public Get(url: string, getAll?:boolean, getId?: boolean, option?: { html?: '', json?:string }): this {
     this.routeUrl = url;
     if (option) {
       this.options = option;
     }
-    else if(useDb){
+    else if(getAll){
       this.setupRouteDB();
     }
-    else {
-      this.setupRoute(url);
+    else if (getId) {
+      this.setupRouteWithID();
+    }
+    else{
+      this.setupRoute(this.routeUrl)
     }
     return this;
   }
-  public DB(tableName: string) {
+  public DB(tableName: string ): this {
     this.dbTable = tableName;
-    return this.setupRouteDB()
+    return this
   }
-  public ID(tableName: string, id:string) {
-    this.dbTable = tableName;
-    return this.setupRouteID(id)
+  public ID(id:number): this {
+    this.dbId = id;
+    return this
   }
-private setupRouteDB(): void {
+private setupRouteDB(): void { 
+this.app.get(this.routeUrl, async (req: Request, res: Response) => {
+  try {
+      const data = await this.queryDatabase();
+      res.json(data) 
+    }
+    catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+  this.routeUrl = ''
+});
+}
+private setupRouteWithID(): void{
   this.app.get(this.routeUrl, async (req: Request, res: Response) => {
-    console.log(this.routeUrl)
     try {
-      if (this.dbTable) {
-        const data = await this.queryDatabase();
-        res.json(data);
-      } else {
-        res.json(this.defaultJson);
+        const data = await this.queryDatabaseId(this.dbId);
+        res.json(data) 
       }
-    } catch (error) {
+      catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
     this.routeUrl = ''
   });
 }
-private setupRouteID(id:String): void {
-  this.setupRouteID(id)
-}
-
 private setupRoute(url:string): void {
   this.app.get(url, async (req: Request, res: Response) => {
-    res.json(this.defaultJson)
+    res.json(this.options.json || this.defaultJson)
   });
 }
-private setupPostRoute(url:string, data:PostData): this {
-  console.log(data)
-  //saveToDb()
-  return this;
+private setupPostRoute(url:string): void {
+  this.app.post (this.routeUrl, async (req, res)=>{
+    try {
+      if(this.useDb) {
+        const data = await this.db.insert(req.body).into(this.dbTable || '')
+        res.json(data)
+      }
+    } catch (error) {
+      res.json(error)
+    }
+  })
+
 }
   private async queryDatabase() {
     const data = await this.db.select('*').from(this.dbTable || '')
     return data
+
   }
-  private async queryDatabaseId(id:string) {
-    const data = await this.db.select('*').from(this.dbTable || '').where('id' == id)
+  private async queryDatabaseId(id:number) { 
+    const data = await this.db.select('*').from(this.dbTable || '').where("id", id)
     return data
   }
 }
 
 //Client
-
 export class Client {
   private app: AxiosInstance
   private routeUrl = '';
-  
+  private postData:PostData = {body:{
+    type: undefined
+  }}
   constructor(){
-    this.app = axios.create({timeout: 25000,headers: {'Content-Type': 'application/json'}})
+    this.app = axios.create({headers: {'Content-Type': 'application/json'}, baseURL:`http://localhost:${5000}`})
   }
-  public async GET(url:string) {
+  public Get(url:string) {
     this.routeUrl = url;
-    const response = await this.app.get(url)
-    return response.data
-  } 
-  public async POST(url:string, data: {}) {
+    this.app.get(url).then((res)=> console.log(res.data))
+  }  
+  public async Post(url:string, data:{}) {
     this.routeUrl = url;
-    const response = await this.app.post(url, data)
-    return response.data
+    //this.postData = data
+    this.app.post(url, data).then((res)=> console.log(res.data))
   } 
 }
+
+const server = new Server(5000)
+const client = new Client()
+server.Get('/', false, false, {json: "hi"})
+server.Get('/users', true).DB('users')
+server.Get('/test', false, true).DB('users').ID(4) 
+server.Get('/test2', false, true).DB('users').ID(8) 
+server.Post('/data', true, 'orders')
+//client.Post('/data', {userId: 6, productId: 1, date: "2023-08-09", paid:1})
+server.start()   

@@ -1,4 +1,4 @@
-[![Express Logo](https://www.zer0cheros.fi/_next/image?url=%2Flogo.webp&w=96&q=75)
+![Express Logo](https://www.zer0cheros.fi/_next/image?url=%2Flogo.webp&w=96&q=75)
 
 # react-simple-server
 
@@ -28,7 +28,19 @@ server.start()
 ```console
 $ npm install @zer0cheros/react-simple-server
 ```
-
+for more optimzations the following steps are required
+1. Install npm-run-all
+```console
+$ npm install npm-run-all -g
+```
+2. Add this to your package.json
+```console
+"scripts": {
+  "server-build": "tsc --watch ./src/index.ts",
+  "server-run": "nodemon ./src/index.js",
+  "server-start": "npm-run-all --parallel server-build server-run"
+}
+```
 ## Features
 
   * Easy setup
