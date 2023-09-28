@@ -1,4 +1,4 @@
-import express from 'express'
+const express = require('express');
 import {Express, Request, Response} from 'express'
 import knex, {Knex} from 'knex';
 import axios, { AxiosInstance } from 'axios';
