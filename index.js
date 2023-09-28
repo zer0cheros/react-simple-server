@@ -37,9 +37,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = void 0;
-var express = require("express");
+var express = require('express');
 var knex_1 = require("knex");
 var axios_1 = require("axios");
+//Database
 var defaultDatabaseConfig = {
     client: 'mysql',
     connection: {
@@ -253,7 +254,7 @@ var Client = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.routeUrl = url;
-                //this.postData = data
+                //this.postData = data 
                 this.app.post(url, data).then(function (res) { return console.log(res.data); });
                 return [2 /*return*/];
             });

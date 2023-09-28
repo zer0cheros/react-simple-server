@@ -1,28 +1,27 @@
 
-import * as express from 'express';
+const express = require('express')
 import {  Request, Response, Application } from 'express';
 import knex, {Knex} from 'knex';
 import axios, { AxiosInstance } from 'axios';
 
-
-
+//Database
 const defaultDatabaseConfig = {
   client: 'mysql',
   connection: {
     host: '127.0.0.1',
     port: 3306,
-    user: 'root',
-    password: 'password',
+    user: 'root', 
+    password: 'password',  
     database: 'db'
   },
 }
 
-
-export type PostData = {
+//types
+ type PostData = {
   body: {type: any}
 }
 
-export type DatabaseProps = {
+type DatabaseProps = {
   database: string
     config?: {
       client: string;
@@ -35,9 +34,9 @@ export type DatabaseProps = {
 }
 
 //Server
-export default class Server {
+export default  class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
-  private port:number | 5000
+  private port:number
   private app: Application
   private db: Knex
   private routeUrl = '';
@@ -180,10 +179,11 @@ export class Client {
   }  
   public async Post(url:string, data:{}) {
     this.routeUrl = url;
-    //this.postData = data
+    //this.postData = data 
     this.app.post(url, data).then((res)=> console.log(res.data))
   } 
-}
+} 
+
 
 const server = new Server(5000)
 const client = new Client()
