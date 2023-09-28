@@ -3,7 +3,6 @@
   "version": "1.0.15",
   "description": "a way to test your react framework with a really easy and fast api",
   "main": "index.ts",
-  "type": "module",
   "module": "dist/index.js",
   "scripts": {
     "postinstall": "node generateServerFile.js",
