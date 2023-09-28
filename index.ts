@@ -1,6 +1,5 @@
-
-const express = require('express')
-import {  Request, Response, Application } from 'express';
+import express from 'express'
+import {Express, Request, Response} from 'express'
 import knex, {Knex} from 'knex';
 import axios, { AxiosInstance } from 'axios';
 
@@ -34,10 +33,10 @@ type DatabaseProps = {
 }
 
 //Server
-export default  class Server {
+export default class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
   private port:number
-  private app: Application
+  private app: Express
   private db: Knex
   private routeUrl = '';
   private dbTable: string | null = null;
@@ -192,5 +191,5 @@ server.Get('/users', true).DB('users')
 server.Get('/test', false, true).DB('users').ID(4) 
 server.Get('/test2', false, true).DB('users').ID(8) 
 server.Post('/data', true, 'orders')
-//client.Post('/data', {userId: 6, productId: 1, date: "2023-08-09", paid:1})
+client.Post('/data', {userId: 6, productId: 1, date: "2023-08-09", paid:1})
 server.start()   

@@ -16,7 +16,7 @@ if (!fs.existsSync(destinationDir)) {
 }
 
 const serverCode = `
-import Server from '@zer0cheros/simple-react-server'
+import Server from '@zer0cheros/react-simple-server'
 
 const server = new Server(8080)
 
@@ -28,6 +28,9 @@ server.Get('/')
 
 //A query to retrieve all data from the 'users' table in the database
 server.Get('/users', true).DB('users')
+
+// A query to retrieve data from the 'users' table in the database, with a specific id
+server.Get('/users', false, true).DB('users').ID(4) 
 
 //Starts application
 server.start()
