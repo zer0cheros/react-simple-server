@@ -183,13 +183,3 @@ export class Client {
   } 
 } 
 
-
-const server = new Server(5000)
-const client = new Client()
-server.Get('/', false, false, {json: "hi"})
-server.Get('/users', true).DB('users')
-server.Get('/test', false, true).DB('users').ID(4) 
-server.Get('/test2', false, true).DB('users').ID(8) 
-server.Post('/data', true, 'orders')
-client.Post('/data', {userId: 6, productId: 1, date: "2023-08-09", paid:1})
-server.start()   
