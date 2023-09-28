@@ -1,7 +1,6 @@
 const express = require('express');
-import {Express, Request, Response} from 'express'
-import knex, {Knex} from 'knex';
-import axios, { AxiosInstance } from 'axios';
+const knex = require('knex');
+const axios = require('axios');
 
 //Database
 const defaultDatabaseConfig = {
@@ -36,8 +35,8 @@ type DatabaseProps = {
 export default class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
   private port:number
-  private app: Express
-  private db: Knex
+  private app:any
+  private db:any
   private routeUrl = '';
   private dbTable: string | null = null;
   private options: { html?: '', json?:string } = {}; 
@@ -108,7 +107,7 @@ export default class Server {
     return this
   }
 private setupRouteDB(): void { 
-this.app.get(this.routeUrl, async (req: Request, res: Response) => {
+this.app.get(this.routeUrl, async (req, res) => {
   try {
       const data = await this.queryDatabase();
       res.json(data) 
@@ -121,7 +120,7 @@ this.app.get(this.routeUrl, async (req: Request, res: Response) => {
 });
 }
 private setupRouteWithID(): void{
-  this.app.get(this.routeUrl, async (req: Request, res: Response) => {
+  this.app.get(this.routeUrl, async (req, res) => {
     try {
         const data = await this.queryDatabaseId(this.dbId);
         res.json(data) 
@@ -134,8 +133,8 @@ private setupRouteWithID(): void{
   });
 }
 private setupRoute(url:string): void {
-  this.app.get(url, async (req: Request, res: Response) => {
-    res.json(this.options.json || this.defaultJson)
+  this.app.get(url, async (req, res) => {
+    res.json(this.defaultJson)
   });
 }
 private setupPostRoute(url:string): void {
@@ -164,7 +163,7 @@ private setupPostRoute(url:string): void {
 
 //Client
 export class Client {
-  private app: AxiosInstance
+  private app:any
   private routeUrl = '';
   private postData:PostData = {body:{
     type: undefined
