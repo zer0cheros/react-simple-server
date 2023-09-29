@@ -1,6 +1,7 @@
-const express = require('express');
-const knex = require('knex');
-const axios = require('axios');
+import * as express from 'express';
+import {Application, Request, Response} from 'express';
+import knex, {Knex} from 'knex';
+import axios, {AxiosInstance} from 'axios';
 
 //Database
 const defaultDatabaseConfig = {
@@ -15,11 +16,11 @@ const defaultDatabaseConfig = {
 }
 
 //types
- type PostData = {
+export type PostData = {
   body: {type: any}
 }
 
-type DatabaseProps = {
+export type DatabaseProps = {
   database: string
     config?: {
       client: string;
@@ -35,8 +36,8 @@ type DatabaseProps = {
 export default class Server {
   public readonly defaultJson: {message: string} = {message: "This is a message from simple-react-server"}
   private port:number
-  private app:any
-  private db:any
+  private app:Application
+  private db:Knex
   private routeUrl = '';
   private dbTable: string | null = null;
   private options: { html?: '', json?:string } = {}; 
@@ -107,7 +108,7 @@ export default class Server {
     return this
   }
 private setupRouteDB(): void { 
-this.app.get(this.routeUrl, async (req, res) => {
+this.app.get(this.routeUrl, async (req:Request, res:Response) => {
   try {
       const data = await this.queryDatabase();
       res.json(data) 
@@ -163,7 +164,7 @@ private setupPostRoute(url:string): void {
 
 //Client
 export class Client {
-  private app:any
+  private app:AxiosInstance
   private routeUrl = '';
   private postData:PostData = {body:{
     type: undefined

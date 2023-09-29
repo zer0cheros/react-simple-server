@@ -37,9 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = void 0;
-var express = require('express');
-var knex = require('knex');
-var axios = require('axios');
+var express = require("express");
+var knex_1 = require("knex");
+var axios_1 = require("axios");
 //Database
 var defaultDatabaseConfig = {
     client: 'mysql',
@@ -60,16 +60,15 @@ var Server = /** @class */ (function () {
         this.options = {};
         this.useDb = false;
         this.dbId = 0;
-        // @ts-ignore
         this.app = express();
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
         this.port = port;
-        this.db = knex(defaultDatabaseConfig);
+        this.db = (0, knex_1.default)(defaultDatabaseConfig);
     }
     Server.prototype.connect = function (database, config) {
         try {
-            this.db = knex({
+            this.db = (0, knex_1.default)({
                 client: config.client,
                 connection: {
                     host: config.host,
@@ -244,7 +243,7 @@ var Client = /** @class */ (function () {
         this.postData = { body: {
                 type: undefined
             } };
-        this.app = axios.create({ headers: { 'Content-Type': 'application/json' }, baseURL: "http://localhost:".concat(5000) });
+        this.app = axios_1.default.create({ headers: { 'Content-Type': 'application/json' }, baseURL: "http://localhost:".concat(5000) });
     }
     Client.prototype.Get = function (url) {
         this.routeUrl = url;
