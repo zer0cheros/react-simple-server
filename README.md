@@ -29,15 +29,17 @@ server.start()
 ## Client
 
 ```tsx
+
 import { useState, useEffect } from 'react'
-import Client from '@zer0cheros/simple-react-serve/client'
+import Client from '@zer0cheros/simple-react-server/client'
 
 
 function App() {
   const [users, setUsers] = useState([]) //your types here
+  const client = new Client()
   useEffect(()=>{
     // Usage
-    const users = client.Get('/users')
+    const users = client.Get('http://localhost:8080/')
     // Returns json response from /users
     setUsers(data)
     // Updates the state

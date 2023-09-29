@@ -16,7 +16,7 @@ if (!fs.existsSync(destinationDir)) {
 }
 
 const serverCode = `
-import Server from '@zer0cheros/react-simple-server'
+import Server from '@zer0cheros/simple-react-server'
 
 const server = new Server(8080)
 
