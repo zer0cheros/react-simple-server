@@ -1,5 +1,3 @@
-import axios, {AxiosInstance} from 'axios';
-
 
 //types
 export type PostData = {
@@ -8,22 +6,33 @@ export type PostData = {
 
 //Client
 export default class Client {
-    private app:AxiosInstance
-    private routeUrl = '';
-    private postData:PostData = {body:{
-      type: undefined
-    }}
-    constructor(){
-      this.app = axios.create({headers: {'Content-Type': 'application/json'}, baseURL:`http://localhost:${5000}`})
+  private baseUrl: string;
+
+  constructor() {
+      this.baseUrl = `http://localhost:${8080}`;
+  }
+
+  public async Get(url: string): Promise<any> {
+      const response = await fetch(`${this.baseUrl}${url}`);
+      if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+  }
+  public async Post(url: string, data: PostData): Promise<any> {
+    const response = await fetch(`${this.baseUrl}${url}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
     }
-    public Get(url:string) {
-      this.routeUrl = url;
-      this.app.get(url).then((res)=> {return res.data})
-    }  
-    public async Post(url:string, data:{ body: { type: undefined } }) {
-        this.routeUrl = url;
-        this.postData = data 
-        this.app.post(url, data).then((res)=>  {return res.data})
-    } 
+    const responseData = await response.json();
+    return responseData;
+}
   } 
   
