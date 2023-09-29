@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {Application, Request, Response} from 'express';
 import knex, {Knex} from 'knex';
-import axios, {AxiosInstance} from 'axios';
+
 
 //Database
 const defaultDatabaseConfig = {
@@ -15,11 +15,7 @@ const defaultDatabaseConfig = {
   },
 }
 
-//types
-export type PostData = {
-  body: {type: any}
-}
-
+//DatabaseProps
 export type DatabaseProps = {
   database: string
     config?: {
@@ -162,24 +158,4 @@ private setupPostRoute(url:string): void {
   }
 }
 
-//Client
-export class Client {
-  private app:AxiosInstance
-  private routeUrl = '';
-  private postData:PostData = {body:{
-    type: undefined
-  }}
-  constructor(){
-    this.app = axios.create({headers: {'Content-Type': 'application/json'}, baseURL:`http://localhost:${5000}`})
-  }
-  public Get(url:string) {
-    this.routeUrl = url;
-    this.app.get(url).then((res)=> console.log(res.data))
-  }  
-  public async Post(url:string, data:{}) {
-    this.routeUrl = url;
-    //this.postData = data 
-    this.app.post(url, data).then((res)=> console.log(res.data))
-  } 
-} 
 

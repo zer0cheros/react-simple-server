@@ -1,12 +1,12 @@
 ![Zer0cheros](https://www.zer0cheros.fi/_next/image?url=%2Flogo.webp&w=96&q=75)
 
-# react-simple-server
+# simple-react-server
 
 A method for testing your React application against a simple and minimal backend API server. The server is a mix of express package and knex package. Simplifying coding for a more enjoyable experience.
 
 ## Server-side
 ```ts
-import Server from '@zer0cheros/react-simple-server'
+import Server from '@zer0cheros/simple-react-server'
 
 const server = new Server(8080)
 
@@ -30,7 +30,7 @@ server.start()
 
 ```tsx
 import { useState, useEffect } from 'react'
-import {Client} from '@zer0cheros/react-simple-server'
+import Client from '@zer0cheros/simple-react-serve/client'
 
 
 function App() {
@@ -54,12 +54,12 @@ function App() {
   )
 }
 
-
+export default App
 ```
 ## Installation
 
 ```console
-$ npm install @zer0cheros/react-simple-server
+$ npm install @zer0cheros/simple-react-server
 ```
 ### Recommended for more optimized development.
 1. Installing script for setting up automation tools.
@@ -70,7 +70,7 @@ $ npm install npm-run-all nodemon -g
 ```console
 "scripts": {
   "server-build": "tsc ./src/server.ts && move src\\server.js src\\server.cjs",
-  "server-run": "nodemon ./src/index.js",
+  "server-run": "nodemon ./src/server.cjs",
   "server-start": "npm-run-all --parallel server-build server-run"
 }
 ```
