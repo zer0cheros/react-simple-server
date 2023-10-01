@@ -36,10 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Client = void 0;
 var express = require("express");
 var knex_1 = require("knex");
-var axios_1 = require("axios");
+var cors = require("cors");
 //Database
 var defaultDatabaseConfig = {
     client: 'mysql',
@@ -60,9 +59,11 @@ var Server = /** @class */ (function () {
         this.options = {};
         this.useDb = false;
         this.dbId = 0;
+        // @ts-ignore
         this.app = express();
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
+        this.app.use(cors());
         this.port = port;
         this.db = (0, knex_1.default)(defaultDatabaseConfig);
     }
@@ -236,29 +237,3 @@ var Server = /** @class */ (function () {
     return Server;
 }());
 exports.default = Server;
-//Client
-var Client = /** @class */ (function () {
-    function Client() {
-        this.routeUrl = '';
-        this.postData = { body: {
-                type: undefined
-            } };
-        this.app = axios_1.default.create({ headers: { 'Content-Type': 'application/json' }, baseURL: "http://localhost:".concat(5000) });
-    }
-    Client.prototype.Get = function (url) {
-        this.routeUrl = url;
-        this.app.get(url).then(function (res) { return console.log(res.data); });
-    };
-    Client.prototype.Post = function (url, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                this.routeUrl = url;
-                //this.postData = data 
-                this.app.post(url, data).then(function (res) { return console.log(res.data); });
-                return [2 /*return*/];
-            });
-        });
-    };
-    return Client;
-}());
-exports.Client = Client;

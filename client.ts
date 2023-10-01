@@ -8,8 +8,8 @@ export type PostData = {
 export default class Client {
   private baseUrl: string;
 
-  constructor() {
-      this.baseUrl = `http://localhost:${8080}`;
+  constructor(baseUrl: string) {
+      this.baseUrl = baseUrl;
   }
 
   public async Get(url: string): Promise<any> {

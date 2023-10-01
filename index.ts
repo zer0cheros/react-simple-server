@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {Application, Request, Response} from 'express';
 import knex, {Knex} from 'knex';
-import cors from 'cors';
+import cors = require('cors');
 
 
 //Database
@@ -46,7 +46,7 @@ export default class Server {
     this.app = express();
     this.app.use(express.urlencoded({extended: true}))
     this.app.use(express.json())
-    this.app.use(cors({origin: '*'}))
+    this.app.use(cors())
     this.port = port;
     this.db = knex(defaultDatabaseConfig)
   }
