@@ -1,6 +1,6 @@
 {
   "name": "@zer0cheros/simple-react-server",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "a way to test your react framework with a really easy and fast api",
   "main": "index.js",
   "module": "dist/index.js",
@@ -32,7 +32,6 @@
     "server",
     "api",
     "simple"
-    
   ],
   "repository": {
     "type": "git",
