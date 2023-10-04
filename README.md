@@ -4,6 +4,11 @@
 
 A method for testing your React application against a simple and minimal backend API server. The server is a mix of express package and knex package. Simplifying coding for a more enjoyable experience.
 
+- Don´t use in production!!
+- Only for development!!
+
+When you install the package, it automatically creates a 'server.ts' file in your '/src' folder.
+
 ## Server-side
 ```ts
 import Server from '@zer0cheros/simple-react-server'
@@ -29,34 +34,34 @@ server.start()
 ## Client
 
 ```tsx
-
+//simple example of using client and server
 import { useState, useEffect } from 'react'
 import Client from '@zer0cheros/simple-react-server/client'
 
 
 function App() {
   const [users, setUsers] = useState([]) //your types here
-  const client = new Client()
+  const client = new Client('http://localhost:8080')
   useEffect(()=>{
-    // Usage
-    const users = client.Get('http://localhost:8080/')
-    // Returns json response from /users
-    setUsers(data)
-    // Updates the state
+    client.Get('/users').then((res)=>{
+      setUsers(res) 
+    })
   },[])
   return (
     <div>
-      {users.map((user)=>(
-        <ul>
-          <li>{user.name}</li>
-          <li>{user.email}</li>
-        </ul>
-      ))}
+      {users.map((user:any)=>(
+        <div key={user.id}>
+          <h1>{user.name}</h1>
+          <h2>{user.email}</h2>
+        </div>
+      )
+      )}
     </div>
   )
 }
 
 export default App
+
 ```
 ## Installation
 

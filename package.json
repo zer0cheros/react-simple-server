@@ -29,7 +29,10 @@
   "types": "./dist/index.d.ts",
   "keywords": [
     "react",
-    "server"
+    "server",
+    "api",
+    "simple"
+    
   ],
   "repository": {
     "type": "git",
